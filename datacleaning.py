@@ -188,31 +188,54 @@ start_secondlockdown.plot()
 
 ########### moving average #############
 ##### import data 
-df= pd.read_excel(r"C094 6min 2019.xlsx")
+df= pd.read_excel(r"C601 6min 2019.xlsx")
 
-df['SMA'] = df['flow'].rolling(window=1680).mean()
+df20= pd.read_excel("/Users/nronzoni/Downloads/DataNice/Promenade des Anglais/2020/C009 6min 20201.xlsx")
+
+df20['SMA'] = df20['flow'].rolling(window=1680).mean()
 df['EMA'] = df['flow'].ewm(adjust=False,span=1680).mean()
 
-simply_moving_average=pd.Series(data=df['SMA'].values, index=df['index'])
+simply_moving_average=pd.Series(data=df20['SMA'].values, index=df20['index'])
 
 exp_moving_average=pd.Series(data=df['EMA'].values, index=df['index'])
 
-simply_moving_average.plot(title='SMA of 1 week C601 detector')
+simply_moving_average.plot(title='SMA of 1 week C009 detector')
 
 exp_moving_average.plot(title='EMA of 1 week C601 detector')
 
 ######### summer vs winter
+# April 6/4 to 10/4 2020
+ap20=df20['flow'][14400:15600]
+len(ap20)
+
+#may 18/5 to 22/5 2020
+may20=df20['flow'][:]
+len(may20)
+
+#10/6 to 14/6 June  2019
+june=df['flow'][2160:3360]
+len(june)
+#8/6 to 12/6 2020 
+june20=df20['flow'][29520:30720]
+len(june20)
+
 # 8/7 to 12/7
 july=df['occupancy'][8880:10080]
 len(july)
- 
- 
+  
  # 5/8 to 9/8
 august=df['occupancy'][15600:16800]
 len(august)
-# 9/9 to 13/9 
-september=df['occupancy'][24000:25200]
+ # 3/8 to 7/8 2020 
+august20=df20['flow'][42960:44160]
+len(august20)
+# 9/9 to 13/9 2019
+september=df['flow'][24000:25200]
 len(september)
+
+# 7/9 to 11/9 2020
+september20=df20['flow'][51360:52560]
+len(september20)
 
 # 18/11 to 22/11
 november=df['flow'][40800:42000]
@@ -232,14 +255,37 @@ plt.xlabel('Mon             Tue                 Wed              Thur           
 plt.legend(loc='lower left')
 plt.show()
 
-plt.plot(mylist,july,'#cc33ff',label='from 8/7 to 12/7', linewidth=0.5)
-plt.plot(mylist,november,'c-',label='from 18/11 to 22/11', linewidth=0.5)
-plt.title('number of veh of C009 detector on different months')
+plt.plot(mylist,august20,'c-',label='from 3/8 to 7/8', linewidth=0.5)
+plt.plot(mylist,september20,'#ff3399',label='from 7/9 to 11/9', linewidth=0.5)
+plt.title('number of veh of C601 detector on different months')
 ax=plt.gca()
 ax.axes.xaxis.set_ticks([])
 plt.xlabel('Mon             Tue                 Wed              Thur              Fri')
 plt.legend(loc='lower left')
 plt.show()
+
+
+
+
+plt.plot(mylist,september,'r-',label='2019', linewidth=0.5)
+plt.plot(mylist,september20,'c--',label='2020', linewidth=0.5)
+plt.title('number of veh of C601 detector 2$^{nd}$ week of September')
+ax=plt.gca()
+ax.axes.xaxis.set_ticks([])
+plt.xlabel('Mon             Tue                 Wed              Thur              Fri')
+plt.legend(loc='lower left')
+plt.show()
+
+plt.plot(mylist,june,'r-',label='2019', linewidth=0.5)
+plt.plot(mylist,june20,'c--',label='2020', linewidth=0.5)
+plt.title('number of veh of C601 detector 2$^{nd}$ week of June')
+ax=plt.gca()
+ax.axes.xaxis.set_ticks([])
+plt.xlabel('Mon             Tue                 Wed              Thur              Fri')
+plt.legend(loc='lower left')
+plt.show()
+
+
 
 
 
