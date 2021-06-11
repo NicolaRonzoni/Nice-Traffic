@@ -1,0 +1,7 @@
+((*- extends 'article.tplx' -*))
+
+((* block bibliography *))
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
+\bibliography{ref}
+((* endblock bibliography *))

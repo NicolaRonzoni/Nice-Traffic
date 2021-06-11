@@ -1,0 +1,69 @@
+\begin{thebibliography}{10}
+
+\bibitem{cuturi2017soft}
+Marco Cuturi and Mathieu Blondel.
+\newblock Soft-dtw: a differentiable loss function for time-series.
+\newblock In {\em International Conference on Machine Learning}, pages
+  894--903. PMLR, 2017.
+
+\bibitem{cuturi2011fast}
+Marco Cuturi.
+\newblock Fast global alignment kernels.
+\newblock In {\em Proceedings of the 28th international conference on machine
+  learning (ICML-11)}, pages 929--936, 2011.
+
+\bibitem{sarda2017comparing}
+Alexis Sard{\'a}-Espinosa.
+\newblock Comparing time-series clustering algorithms in r using the dtwclust
+  package.
+
+\bibitem{sakoe1978dynamic}
+Hiroaki Sakoe and Seibi Chiba.
+\newblock Dynamic programming algorithm optimization for spoken word
+  recognition.
+\newblock {\em IEEE transactions on acoustics, speech, and signal processing},
+  26(1):43--49, 1978.
+
+\bibitem{dhillon2004kernel}
+Inderjit~S Dhillon, Yuqiang Guan, and Brian Kulis.
+\newblock Kernel k-means: spectral clustering and normalized cuts.
+\newblock In {\em Proceedings of the tenth ACM SIGKDD international conference
+  on Knowledge discovery and data mining}, pages 551--556, 2004.
+
+\bibitem{tavenard2020tslearn}
+Romain Tavenard, Johann Faouzi, Gilles Vandewiele, Felix Divo, Guillaume
+  Androz, Chester Holtz, Marie Payne, Roman Yurchak, Marc Ru{\ss}wurm, Kushal
+  Kolar, et~al.
+\newblock Tslearn, a machine learning toolkit for time series data.
+\newblock {\em Journal of Machine Learning Research}, 21(118):1--6, 2020.
+
+\bibitem{blondel2021differentiable}
+Mathieu Blondel, Arthur Mensch, and Jean-Philippe Vert.
+\newblock Differentiable divergences between time series.
+\newblock In {\em International Conference on Artificial Intelligence and
+  Statistics}, pages 3853--3861. PMLR, 2021.
+
+\bibitem{cuturi2009positive}
+Marco Cuturi.
+\newblock Positive definite kernels in machine learning.
+\newblock {\em arXiv preprint arXiv:0911.5367}, 2009.
+
+\bibitem{janati2020spatio}
+Hicham Janati, Marco Cuturi, and Alexandre Gramfort.
+\newblock Spatio-temporal alignments: Optimal transport through space and time.
+\newblock In {\em International Conference on Artificial Intelligence and
+  Statistics}, pages 1695--1704. PMLR, 2020.
+
+\bibitem{pedregosa2011scikit}
+Fabian Pedregosa, Ga{\"e}l Varoquaux, Alexandre Gramfort, Vincent Michel,
+  Bertrand Thirion, Olivier Grisel, Mathieu Blondel, Peter Prettenhofer, Ron
+  Weiss, Vincent Dubourg, et~al.
+\newblock Scikit-learn: Machine learning in python.
+\newblock {\em the Journal of machine Learning research}, 12:2825--2830, 2011.
+
+\bibitem{treiber2014traffic}
+Martin Treiber and Arne Kesting.
+\newblock Traffic flow dynamics: data, models and simulation.
+\newblock {\em Physics Today}, 67(3):54, 2014.
+
+\end{thebibliography}
