@@ -114,9 +114,213 @@ loop=loop.sum(axis=1)
 loop.to_excel('/Users/nronzoni/Downloads/DataNice/Voie Mathis/DonnÇes 1-6min/first step/second step/philippe sud 2020 flow.xlsx')
 
 ####################################################################################
-df_VL=pd.read_csv(r'ELNOUZAH.COMPTAGE.PVOIE.VL.csv')
-df_VR=pd.read_csv(r'ELNOUZAH.COMPTAGE.PVOIE.VR.csv')
 
+###########################################################################################################
+# Keep observations in the range 6 to 22:54
+
+df_flow=pd.read_excel(r'philippe sud 2019 flow.xlsx')
+df_flow_1=pd.read_excel(r'philippe sud 2020 flow.xlsx')
+
+#2019
+flow_series=pd.Series(data=df_flow[0].values,index=pd.to_datetime(df_flow['RECTS']))
+#2020
+flow_series_1=pd.Series(data=df_flow_1[0].values,index=pd.to_datetime(df_flow_1['RECTS']))
+
+flow_6min_2019=flow_series.between_time('5:59', '22:59')
+flow_6min_2019=flow_6min_2019.replace(180,np.nan)
+flow_6min_2019=flow_6min_2019.replace(108,np.nan)
+flow_6min_2019=flow_6min_2019.replace(6,np.nan)
+flow_6min_2019=flow_6min_2019.replace(90,np.nan)
+flow_6min_2019=flow_6min_2019.replace(99,np.nan)
+flow_6min_2019=flow_6min_2019.replace(to_replace=0, method='ffill',limit=1)
+flow_6min_2019=flow_6min_2019.replace(135,np.nan)
+flow_6min_2019=flow_6min_2019.replace(22,np.nan)
+
+
+
+flow_6min_2020=flow_series_1.between_time('5:59', '22:59')
+flow_6min_2020=flow_6min_2020.replace(180,np.nan)
+flow_6min_2020=flow_6min_2020.replace(108,np.nan)
+flow_6min_2020=flow_6min_2020.replace(6,np.nan)
+flow_6min_2020=flow_6min_2020.replace(90,np.nan)
+flow_6min_2020=flow_6min_2020.replace(99,np.nan)
+flow_6min_2020=flow_6min_2020.replace(to_replace=0, method='ffill',limit=1)
+flow_6min_2020=flow_6min_2020.replace(135,np.nan)
+flow_6min_2020=flow_6min_2020.replace(22,np.nan)
+
+
+len(flow_6min_2019)
+len(flow_6min_2020)
+#20/6-26/6
+flow_1=flow_6min_2020[3230:3230+1190]
+#24/2-1/3
+flow_2=flow_6min_2020[9180:9180+1190]
+#23/3-29/3
+flow_3=flow_6min_2020[13940:13940+1190]
+#20/7-26/7
+flow_4=flow_6min_2020[34170:+34170+1190]
+
+df=pd.read_excel(r'philippe sud 2019.xlsx')
+
+df_1=pd.read_excel(r' 2020.xlsx')
+
+speed_series=pd.Series(data=df['speed'].values,index=pd.to_datetime(df['index']))
+speed_series_1=pd.Series(data=df_1['speed'].values,index=pd.to_datetime(df_1['index']))
+
+occupancy_series=pd.Series(data=df['occupancy'].values,index=pd.to_datetime(df['index']))
+occupancy_series_1=pd.Series(data=df_1['occupancy'].values,index=pd.to_datetime(df_1['index']))
+
+#2019
+speed_6min_2019=speed_series.between_time('5:59', '22:59')
+speed_6min_2019[speed_6min_2019 < 2] = np.nan
+speed_6min_2019=speed_6min_2019.replace(12,np.nan)
+speed_6min_2019=speed_6min_2019.replace(13,np.nan)
+speed_6min_2019=speed_6min_2019.replace(15,np.nan)
+speed_6min_2019=speed_6min_2019.replace(14,np.nan)
+speed_6min_2019=speed_6min_2019.replace(to_replace=0, method='ffill',limit=1)
+speed_6min_2019=speed_6min_2019.replace(11,np.nan)
+speed_6min_2019=speed_6min_2019.replace(2,np.nan)
+speed_6min_2019=speed_6min_2019.replace(0,np.nan)
+
+
+#2020
+speed_6min_2020=speed_series_1.between_time('5:59', '22:59')
+speed_6min_2020[speed_6min_2020 < 2] = np.nan
+speed_6min_2020=speed_6min_2020.replace(12,np.nan)
+speed_6min_2020=speed_6min_2020.replace(13,np.nan)
+speed_6min_2020=speed_6min_2020.replace(15,np.nan)
+speed_6min_2020=speed_6min_2020.replace(14,np.nan)
+speed_6min_2020=speed_6min_2020.replace(to_replace=0, method='ffill',limit=1)
+speed_6min_2020=speed_6min_2020.replace(1,np.nan)
+speed_6min_2020=speed_6min_2020.replace(11,np.nan)
+speed_6min_2020=speed_6min_2020.replace(0,np.nan)
+
+
+
+len(speed_6min_2019)
+len(speed_6min_2020)
+#20/6-26/6
+speed_1=speed_6min_2020[3230:3230+1190]
+#24/2-1/3
+speed_2=speed_6min_2020[9180:9180+1190]
+#23/3-29/3
+speed_3=speed_6min_2020[13940:13940+1190]
+#20/7-26/7
+speed_4=speed_6min_2020[34170:+34170+1190]
+
+
+#2019
+occupancy_6min_2019=occupancy_series.between_time('5:59', '22:59')
+occupancy_6min_2019=occupancy_6min_2019.replace(12,np.nan)
+occupancy_6min_2019=occupancy_6min_2019.replace(13,np.nan)
+occupancy_6min_2019=occupancy_6min_2019.replace(14,np.nan)
+occupancy_6min_2019=occupancy_6min_2019.replace(15,np.nan)
+occupancy_6min_2019=occupancy_6min_2019.replace(to_replace=0, method='ffill',limit=1)
+occupancy_6min_2019=occupancy_6min_2019.replace(0.5,np.nan)
+occupancy_6min_2019=occupancy_6min_2019.replace(11,np.nan)
+occupancy_6min_2019=occupancy_6min_2019.replace(2,np.nan)
+occupancy_6min_2019=occupancy_6min_2019.replace(2.5,np.nan)
+occupancy_6min_2019=occupancy_6min_2019.replace(0,np.nan)
+
+occupancy_6min_2019[occupancy_6min_2019 == 0].count()
+
+#2020
+occupancy_6min_2020=occupancy_series_1.between_time('5:59', '22:59')
+occupancy_6min_2020=occupancy_6min_2020.replace(12,np.nan)
+occupancy_6min_2020=occupancy_6min_2020.replace(13,np.nan)
+occupancy_6min_2020=occupancy_6min_2020.replace(14,np.nan)
+occupancy_6min_2020=occupancy_6min_2020.replace(15,np.nan)
+occupancy_6min_2020=occupancy_6min_2020.replace(to_replace=0, method='ffill',limit=1)
+occupancy_6min_2020=occupancy_6min_2020.replace(1,np.nan)
+occupancy_6min_2020=occupancy_6min_2020.replace(0.5,np.nan)
+occupancy_6min_2020=occupancy_6min_2020.replace(11,np.nan)
+occupancy_6min_2020=occupancy_6min_2020.replace(2,np.nan)
+occupancy_6min_2020=occupancy_6min_2020.replace(2.5,np.nan)
+occupancy_6min_2020=occupancy_6min_2020.replace(0,np.nan)
+
+occupancy_6min_2020[occupancy_6min_2020 == 0].count()
+len(occupancy_6min_2019)
+len(occupancy_6min_2020)
+
+#20/6-26/6
+occupancy_1=occupancy_6min_2020[3230:3230+1190]
+#24/2-1/3
+occupancy_2=occupancy_6min_2020[9180:9180+1190]
+#23/3-29/3
+occupancy_3=occupancy_6min_2020[13940:13940+1190]
+#20/7-26/7
+occupancy_4=occupancy_6min_2020[34170:+34170+1190]
+
+flow=pd.concat([flow_6min_2019,flow_1,flow_2,flow_3,flow_4])
+
+speed=pd.concat([speed_6min_2019,speed_1,speed_2,speed_3,speed_4])
+
+occupancy=pd.concat([occupancy_6min_2019,occupancy_1,occupancy_2,occupancy_3,occupancy_4])
+
+columns=['flow','speed','occupancy']
+
+loop=pd.DataFrame(columns=columns,index=flow.index)
+loop['flow']=flow.values
+loop['speed']=speed.values
+loop['occupancy']=occupancy.values
+
+loop
+
+loop= loop.fillna(-1)
+
+
+loop['day'] = loop.index.day
+loop['month'] =loop.index.month
+loop['year'] = loop.index.year
+loop['hour'] = loop.index.hour
+loop['minute'] = loop.index.minute
+loop.reset_index(drop=True, inplace=True)
+loop = loop[['year', 'month', 'day','hour','minute', 'flow','occupancy','speed']]
+loop
+#####
+#if flow=0 then occupancy=0
+loop['occupancy']= np.where( (loop['flow']==-1),-1,loop.occupancy)
+#if occupancy=0 then flow=0
+loop['flow']= np.where( (loop['occupancy']==-1),-1,loop.flow)
+#if flow=0 then speed=max
+loop['speed']=pd.to_numeric(loop['speed'])
+loop['speed']= np.where( (loop['flow']==-1),-1,loop.speed)
+
+loop
+#replace Nan value with -1
+loop.to_excel('/Users/nronzoni/Desktop/Voie Mathis/loop detector/philippe sud.xlsx')
+
+loop
+
+#1
+df_augustin=pd.read_excel(r'/Users/nronzoni/Desktop/Voie Mathis/loop detector/cimiez nord.xlsx')
+#2
+df_gloria=pd.read_excel(r'/Users/nronzoni/Desktop/Voie Mathis/loop detector/philippe nord.xlsx')
+#3
+df_philippesud=pd.read_excel(r'/Users/nronzoni/Desktop/Voie Mathis/loop detector/magnan.xlsx')
+#4
+df_cimiezsud=pd.read_excel(r'/Users/nronzoni/Desktop/Voie Mathis/loop detector/grinda.xlsx')
+
+
+
+writer = pd.ExcelWriter('/Users/nronzoni/Desktop/Voie Mathis/loop detector/Voie Mathis North direction.xlsx', engine='xlsxwriter')
+
+# Write each dataframe to a different worksheet.
+df_augustin.to_excel(writer, sheet_name='Cimiez Nord')
+df_gloria.to_excel(writer, sheet_name='Philippe Nord')
+df_philippesud.to_excel(writer, sheet_name='Magnan')
+df_cimiezsud.to_excel(writer, sheet_name='Grinda')
+
+
+# Close the Pandas Excel writer and output the Excel file.
+writer.save()
+
+########################################################################################################################
+#ramps
+df=pd.read_csv(r'CIMIEZ.COMPTAGE.ENTREE.csv')
+df
+
+df['NAME']
 #speed
 speed_VL=df_VL.loc[(df_VL['NAME'] =="ELNOUZAH.COMPTAGE.PVOIE.VL.VIT")] 
 
@@ -236,155 +440,6 @@ tax['VR']=tax_VR.values
 tax=tax.sum(axis=1)
 tax.to_excel('/Users/nronzoni/Downloads/DataNice/Voie Mathis/DonnÇes 1-6min/first step/second step/ELNOUZAH occupancy.xlsx')
 
-###########################################################################################################
-# Keep observations in the range 6 to 22:54
-
-df_flow=pd.read_excel(r'augustin 2019 flow.xlsx')
-df_flow_1=pd.read_excel(r'augustin 2020 flow.xlsx')
-
-#2019
-flow_series=pd.Series(data=df_flow[0].values,index=pd.to_datetime(df_flow['RECTS']))
-#2020
-flow_series_1=pd.Series(data=df_flow_1[0].values,index=pd.to_datetime(df_flow_1['RECTS']))
-
-flow_6min_2019=flow_series.between_time('5:59', '22:59')
-flow_6min_2019=flow_6min_2019.replace(180,np.nan)
-flow_6min_2019=flow_6min_2019.replace(108,np.nan)
-flow_6min_2019=flow_6min_2019.replace(6,np.nan)
-flow_6min_2019=flow_6min_2019.replace(90,np.nan)
-flow_6min_2019=flow_6min_2019.replace(99,np.nan)
-flow_6min_2019=flow_6min_2019.replace(to_replace=0, method='ffill',limit=1)
-flow_6min_2019=flow_6min_2019.replace(135,np.nan)
-
-
-
-flow_6min_2020=flow_series_1.between_time('5:59', '22:59')
-flow_6min_2020=flow_6min_2020.replace(180,np.nan)
-flow_6min_2020=flow_6min_2020.replace(108,np.nan)
-flow_6min_2020=flow_6min_2020.replace(6,np.nan)
-flow_6min_2020=flow_6min_2020.replace(90,np.nan)
-flow_6min_2020=flow_6min_2020.replace(99,np.nan)
-flow_6min_2020=flow_6min_2020.replace(to_replace=0, method='ffill',limit=1)
-flow_6min_2020=flow_6min_2020.replace(135,np.nan)
-len(flow_6min_2019)
-len(flow_6min_2020)
-#20/6-26/6
-flow_1=flow_6min_2020[3230:3230+1190]
-#24/2-1/3
-flow_2=flow_6min_2020[9180:9180+1190]
-#23/3-29/3
-flow_3=flow_6min_2020[13940:13940+1190]
-#20/7-26/7
-flow_4=flow_6min_2020[34170:+34170+1190]
-
-df=pd.read_excel(r'augustin 2019.xlsx')
-
-df_1=pd.read_excel(r'augustin 2020.xlsx')
-
-speed_series=pd.Series(data=df['speed'].values,index=pd.to_datetime(df['index']))
-speed_series_1=pd.Series(data=df_1['speed'].values,index=pd.to_datetime(df_1['index']))
-
-occupancy_series=pd.Series(data=df['occupancy'].values,index=pd.to_datetime(df['index']))
-occupancy_series_1=pd.Series(data=df_1['occupancy'].values,index=pd.to_datetime(df_1['index']))
-
-#2019
-speed_6min_2019=speed_series.between_time('5:59', '22:59')
-speed_6min_2019=speed_6min_2019.replace(12,np.nan)
-speed_6min_2019=speed_6min_2019.replace(13,np.nan)
-speed_6min_2019=speed_6min_2019.replace(15,np.nan)
-speed_6min_2019=speed_6min_2019.replace(14,np.nan)
-speed_6min_2019=speed_6min_2019.replace(to_replace=0, method='ffill',limit=1)
-speed_6min_2019=speed_6min_2019.replace(1,np.nan)
-speed_6min_2019=speed_6min_2019.where(speed_6min_2019.values < 1,np.nan, inplace=True)
-speed_6min_2019=speed_6min_2019.replace(11,np.nan)
-speed_6min_2019=speed_6min_2019.replace(2,np.nan)
-
-#2020
-speed_6min_2020=speed_series_1.between_time('5:59', '22:59')
-speed_6min_2020=speed_6min_2020.replace(12,np.nan)
-speed_6min_2020=speed_6min_2020.replace(13,np.nan)
-speed_6min_2020=speed_6min_2020.replace(15,np.nan)
-speed_6min_2020=speed_6min_2020.replace(14,np.nan)
-speed_6min_2020=speed_6min_2020.replace(to_replace=0, method='ffill',limit=1)
-speed_6min_2020=speed_6min_2020.replace(1,np.nan)
-speed_6min_2020=speed_6min_2020.where(speed_6min_2020.values < 1,np.nan, inplace=True)
-speed_6min_2020=speed_6min_2020.replace(11,np.nan)
-speed_6min_2020=speed_6min_2020.replace(2,np.nan)
-
-len(speed_6min_2019)
-len(speed_6min_2020)
-#20/6-26/6
-speed_1=speed_6min_2020[3230:3230+1190]
-#24/2-1/3
-speed_2=speed_6min_2020[9180:9180+1190]
-#23/3-29/3
-speed_3=speed_6min_2020[13940:13940+1190]
-#20/7-26/7
-speed_4=speed_6min_2020[34170:+34170+1190]
-
-
-#2019
-occupancy_6min_2019=occupancy_series.between_time('5:59', '22:59')
-occupancy_6min_2019=occupancy_6min_2019.replace(12,np.nan)
-occupancy_6min_2019=occupancy_6min_2019.replace(13,np.nan)
-occupancy_6min_2019=occupancy_6min_2019.replace(14,np.nan)
-occupancy_6min_2019=occupancy_6min_2019.replace(15,np.nan)
-occupancy_6min_2019=occupancy_6min_2019.replace(to_replace=0, method='ffill',limit=1)
-occupancy_6min_2019=occupancy_6min_2019.replace(1,np.nan)
-occupancy_6min_2019=occupancy_6min_2019.replace(0.5,np.nan)
-occupancy_6min_2019=occupancy_6min_2019.replace(11,np.nan)
-occupancy_6min_2019=occupancy_6min_2019.replace(2,np.nan)
-
-#2020
-occupancy_6min_2020=occupancy_series_1.between_time('5:59', '22:59')
-occupancy_6min_2020=occupancy_6min_2020.replace(12,np.nan)
-occupancy_6min_2020=occupancy_6min_2020.replace(13,np.nan)
-occupancy_6min_2020=occupancy_6min_2020.replace(14,np.nan)
-occupancy_6min_2020=occupancy_6min_2020.replace(15,np.nan)
-occupancy_6min_2020=occupancy_6min_2020.replace(to_replace=0, method='ffill',limit=1)
-occupancy_6min_2020=occupancy_6min_2020.replace(1,np.nan)
-occupancy_6min_2020=occupancy_6min_2020.replace(0.5,np.nan)
-occupancy_6min_2020=occupancy_6min_2020.replace(11,np.nan)
-occupancy_6min_2020=occupancy_6min_2020.replace(2,np.nan)
-
-len(occupancy_6min_2019)
-len(occupancy_6min_2020)
-
-#20/6-26/6
-occupancy_1=occupancy_6min_2020[3230:3230+1190]
-#24/2-1/3
-occupancy_2=occupancy_6min_2020[9180:9180+1190]
-#23/3-29/3
-occupancy_3=occupancy_6min_2020[13940:13940+1190]
-#20/7-26/7
-occupancy_4=occupancy_6min_2020[34170:+34170+1190]
-
-flow=pd.concat([flow_6min_2019,flow_1,flow_2,flow_3,flow_4])
-
-speed=pd.concat([speed_6min_2019,speed_1,speed_2,speed_3,speed_4])
-
-occupancy=pd.concat([occupancy_6min_2019,occupancy_1,occupancy_2,occupancy_3,occupancy_4])
-
-columns=['flow','speed','occupancy']
-
-loop=pd.DataFrame(columns=columns,index=flow.index)
-loop['flow']=flow.values
-loop['speed']=speed.values
-loop['occupancy']=occupancy.values
-
-#####
-#if flow=0 then occupancy=0
-loop['occupancy']= np.where( (loop['flow']==0),0,loop.occupancy)
-#if occupancy=0 then flow=0
-loop['flow']= np.where( (loop['occupancy']==0),0,loop.flow)
-#if flow=0 then speed=max
-loop['speed']= np.where( (loop['flow']==0),loop['speed'].max,loop.speed)
-#replace Nan value with -1
-loop= loop.fillna(-1)
-
-loop.to_excel('/Users/nronzoni/Desktpo/Voie Mathis/loop detector/.xlsx')
-
-########################################################################################################################
 
 speed_series_6min=speed_series_6.between_time('4:59', '23:59')
 
