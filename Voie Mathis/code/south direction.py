@@ -102,7 +102,7 @@ print('Min: %f, Max: %f' % (series_train_cimiez_sud_flow[1].data_min_, series_tr
 
 
 #multivariate time series train
-multivariate=np.dstack((series_train_gloria_flow[0],series_train_carras_entree_flow[0],series_train_carras_sortie_flow[0],series_train_philippe_sud_flow[0],series_train_cimiez_sud_flow[0]))
+multivariate=np.dstack((series_train_carras_sortie_flow[0],series_train_carras_entree_flow[0],series_train_gloria_flow[0],series_train_philippe_sud_flow[0],series_train_cimiez_sud_flow[0]))
 multivariate_time_series_train = to_time_series(multivariate)
 print(multivariate_time_series_train.shape)
 
@@ -141,7 +141,7 @@ print('Min: %f, Max: %f' % (series_test_cimiez_sud_flow[1].data_min_, series_tes
 
 
 #multivariate time series test
-multivariate_test=np.dstack((series_test_gloria_flow[0],series_test_carras_entree_flow[0],series_test_carras_sortie_flow[0],series_test_philippe_sud_flow[0],series_test_cimiez_sud_flow[0]))
+multivariate_test=np.dstack((series_test_carras_sortie_flow[0],series_test_carras_entree_flow[0],series_test_gloria_flow[0],series_test_philippe_sud_flow[0],series_test_cimiez_sud_flow[0]))
 multivariate_time_series_test = to_time_series(multivariate_test)
 print(multivariate_time_series_test.shape)
 
@@ -409,10 +409,7 @@ prediction_test
 
 
 
-#centroids 
-centroids=km_dba.cluster_centers_
 
-centroids.shape
 
 #dataframe to select days which belogns to the closest cluster 
 len(index_train)
@@ -777,5 +774,539 @@ plt.figtext(0.5,0.50, "No working days September-December ", ha="center", va="to
 plt.figtext(0.5,0.70, "Working days September-December", ha="center", va="top", fontsize=14, color="r")
 plt.figtext(0.5,0.90, "Working days January-August", ha="center", va="top", fontsize=14, color="r")
 plt.show()
+
+
+#######################################
+#plot of the centroid 
+
+#centroids 
+centroids=km_dba.cluster_centers_
+
+centroids.shape
+
+##### first cluster #######
+cluster1=multivariate_time_series_train[prediction_train==0]
+
+random.shuffle(cluster1)
+
+sample1=cluster1[0:20]
+
+sample1.shape
+
+carras_sortie_sample1=sample1[:,:,0]
+carras_sortie_sample1=series_train_carras_sortie_flow[1].inverse_transform(carras_sortie_sample1)
+carras_sortie_sample1.shape
+
+carras_entree_sample1=sample1[:,:,1]
+carras_entree_sample1=series_train_carras_entree_flow[1].inverse_transform(carras_entree_sample1)
+carras_entree_sample1.shape
+
+gloria_sample1=sample1[:,:,2]
+gloria_sample1=series_train_gloria_flow[1].inverse_transform(gloria_sample1)
+gloria_sample1.shape
+
+philippe_sud_sample1=sample1[:,:,3]
+philippe_sud_sample1=series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_sample1)
+philippe_sud_sample1.shape
+
+cimiez_sud_sample1=sample1[:,:,4]
+cimiez_sud_sample1=series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_sample1)
+cimiez_sud_sample1.shape
+
+
+####second cluster #######
+
+cluster2=multivariate_time_series_train[prediction_train==1]
+
+
+random.shuffle(cluster2)
+
+sample2=cluster2[0:20]
+
+sample2.shape
+
+carras_sortie_sample2=sample2[:,:,0]
+carras_sortie_sample2=series_train_carras_sortie_flow[1].inverse_transform(carras_sortie_sample2)
+carras_sortie_sample2.shape
+
+carras_entree_sample2=sample2[:,:,1]
+carras_entree_sample2=series_train_carras_entree_flow[1].inverse_transform(carras_entree_sample2)
+carras_entree_sample2.shape
+
+gloria_sample2=sample2[:,:,2]
+gloria_sample2=series_train_gloria_flow[1].inverse_transform(gloria_sample2)
+gloria_sample2.shape
+
+philippe_sud_sample2=sample2[:,:,3]
+philippe_sud_sample2=series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_sample2)
+philippe_sud_sample2.shape
+
+cimiez_sud_sample2=sample2[:,:,4]
+cimiez_sud_sample2=series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_sample2)
+cimiez_sud_sample2.shape
+
+
+#select randomly time series from third cluster 
+cluster3=multivariate_time_series_train[prediction_train==2]
+
+random.shuffle(cluster3)
+
+sample3=cluster3[0:20]
+
+sample3.shape
+
+carras_sortie_sample3=sample3[:,:,0]
+carras_sortie_sample3=series_train_carras_sortie_flow[1].inverse_transform(carras_sortie_sample3)
+carras_sortie_sample3.shape
+
+carras_entree_sample3=sample3[:,:,1]
+carras_entree_sample3=series_train_carras_entree_flow[1].inverse_transform(carras_entree_sample3)
+carras_entree_sample3.shape
+
+gloria_sample3=sample3[:,:,2]
+gloria_sample3=series_train_gloria_flow[1].inverse_transform(gloria_sample3)
+gloria_sample3.shape
+
+philippe_sud_sample3=sample3[:,:,3]
+philippe_sud_sample3=series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_sample3)
+philippe_sud_sample3.shape
+
+cimiez_sud_sample3=sample3[:,:,4]
+cimiez_sud_sample3=series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_sample3)
+cimiez_sud_sample3.shape
+
+
+#k=0#
+carras_sortie_1=centroids[0][:,0]
+carras_sortie_1=carras_sortie_1.reshape((len(carras_sortie_1), 1))
+
+carras_entree_1=centroids[0][:,1]
+carras_entree_1=carras_entree_1.reshape((len(carras_entree_1), 1))
+
+gloria_1=centroids[0][:,2]
+gloria_1=gloria_1.reshape((len(gloria_1), 1))
+
+philippe_sud_1=centroids[0][:,3]
+philippe_sud_1=philippe_sud_1.reshape((len(philippe_sud_1), 1))
+
+cimiez_sud_1=centroids[0][:,4]
+cimiez_sud_1=cimiez_sud_1.reshape((len(cimiez_sud_1), 1))
+
+
+#k=1#
+carras_sortie_2=centroids[1][:,0]
+carras_sortie_2=carras_sortie_2.reshape((len(carras_sortie_2), 1))
+
+carras_entree_2=centroids[1][:,1]
+carras_entree_2=carras_entree_2.reshape((len(carras_entree_2), 1))
+
+gloria_2=centroids[1][:,2]
+gloria_2=gloria_2.reshape((len(gloria_2), 1))
+
+philippe_sud_2=centroids[1][:,3]
+philippe_sud_2=philippe_sud_2.reshape((len(philippe_sud_2), 1))
+
+cimiez_sud_2=centroids[1][:,4]
+cimiez_sud_2=cimiez_sud_2.reshape((len(cimiez_sud_2), 1))
+
+#k=2#
+carras_sortie_3=centroids[2][:,0]
+carras_sortie_3=carras_sortie_3.reshape((len(carras_sortie_3), 1))
+
+carras_entree_3=centroids[2][:,1]
+carras_entree_3=carras_entree_3.reshape((len(carras_entree_3), 1))
+
+gloria_3=centroids[2][:,2]
+gloria_3=gloria_3.reshape((len(gloria_3), 1))
+
+philippe_sud_3=centroids[2][:,3]
+philippe_sud_3=philippe_sud_3.reshape((len(philippe_sud_3), 1))
+
+cimiez_sud_3=centroids[2][:,4]
+cimiez_sud_3=cimiez_sud_3.reshape((len(cimiez_sud_3), 1))
+
+
+
+x=np.arange(6,23,0.1)
+len(x)
+
+
+plt.figure(figsize=(35,35))
+plt.subplot(3,5,1)
+for i in range(0,20):
+    plt.plot(x,carras_sortie_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_carras_sortie_flow[1].inverse_transform(carras_sortie_2),'#33cc33', label = 'Carras sortie',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,250))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=0',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,2)
+for i in range(0,20):
+    plt.plot(x,carras_entree_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_carras_entree_flow[1].inverse_transform(carras_entree_2),'#33cc33', label = 'Carras entrèe',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,250))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=0',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,3)
+for i in range(0,20):
+    plt.plot(x,gloria_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_gloria_flow[1].inverse_transform(gloria_2),'#33cc33', label = 'Gloria',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=0',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,4)
+for i in range(0,20):
+    plt.plot(x,philippe_sud_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_2),'#33cc33', label = 'Philippe Sud',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=0',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,5)
+for i in range(0,20):
+    plt.plot(x,cimiez_sud_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_2),'#33cc33', label = 'Cimiez Sud',linewidth=3)
+plt.xlabel('hours of the day')
+plt.ylabel('débit de circulation veh',labelpad=0)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=0',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,6)
+for i in range(0,20):
+    plt.plot(x,carras_sortie_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_carras_sortie_flow[1].inverse_transform(carras_sortie_1),'#0033cc', label = 'Carras sortie',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,250))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=1',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,7)
+for i in range(0,20):
+    plt.plot(x,carras_entree_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_carras_entree_flow[1].inverse_transform(carras_entree_1),'#0033cc', label = 'Carras entrèe',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,250))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=1',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,8)
+for i in range(0,20):
+    plt.plot(x,gloria_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_gloria_flow[1].inverse_transform(gloria_1),'#0033cc', label = 'Gloria',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=1',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,9)
+for i in range(0,20):
+    plt.plot(x,philippe_sud_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_1),'#0033cc', label = 'Philippe Sud',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=1',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,10)
+for i in range(0,20):
+    plt.plot(x,cimiez_sud_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_1),'#0033cc', label = 'Cimiez Sud',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=1',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,11)
+for i in range(0,20):
+    plt.plot(x,carras_sortie_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_carras_sortie_flow[1].inverse_transform(carras_sortie_3),'#666699', label = 'Carras sortie',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,250))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=2',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,12)
+for i in range(0,20):
+    plt.plot(x,carras_entree_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_carras_entree_flow[1].inverse_transform(carras_entree_3),'#666699', label = 'Carras entrèe',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,250))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=2',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,13)
+for i in range(0,20):
+    plt.plot(x,gloria_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_gloria_flow[1].inverse_transform(gloria_3),'#666699', label = 'Gloria',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=2',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,14)
+for i in range(0,20):
+    plt.plot(x,philippe_sud_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_3),'#666699', label = 'Philippe Sud',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=2',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,5,15)
+for i in range(0,20):
+    plt.plot(x,cimiez_sud_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_3),'#666699', label = 'Cimiez Sud',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('débit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=2',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.figtext(0.5,0.38, "Working days in winter", ha="center", va="top", fontsize=24, color="r")
+plt.figtext(0.5,0.65, "Working days in summer", ha="center", va="top", fontsize=24, color="r")
+plt.figtext(0.5,0.90, "No Working days", ha="center", va="top", fontsize=24, color="r")
+plt.show()
+
+#######################################
+#plot of the centroid 
+
+#centroids 
+centroids=km_dba.cluster_centers_
+
+centroids.shape
+
+##### first cluster #######
+cluster1=multivariate_time_series_train[prediction_train==0]
+
+random.shuffle(cluster1)
+
+sample1=cluster1[0:20]
+
+sample1.shape
+
+
+gloria_sample1=sample1[:,:,0]
+gloria_sample1=series_train_gloria_flow[1].inverse_transform(gloria_sample1)
+gloria_sample1.shape
+
+philippe_sud_sample1=sample1[:,:,1]
+philippe_sud_sample1=series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_sample1)
+philippe_sud_sample1.shape
+
+cimiez_sud_sample1=sample1[:,:,2]
+cimiez_sud_sample1=series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_sample1)
+cimiez_sud_sample1.shape
+
+
+####second cluster #######
+
+cluster2=multivariate_time_series_train[prediction_train==1]
+
+
+random.shuffle(cluster2)
+
+sample2=cluster2[0:20]
+
+sample2.shape
+
+gloria_sample2=sample2[:,:,0]
+gloria_sample2=series_train_gloria_flow[1].inverse_transform(gloria_sample2)
+gloria_sample2.shape
+
+philippe_sud_sample2=sample2[:,:,1]
+philippe_sud_sample2=series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_sample2)
+philippe_sud_sample2.shape
+
+cimiez_sud_sample2=sample2[:,:,2]
+cimiez_sud_sample2=series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_sample2)
+cimiez_sud_sample2.shape
+
+
+#select randomly time series from third cluster 
+cluster3=multivariate_time_series_train[prediction_train==2]
+
+random.shuffle(cluster3)
+
+sample3=cluster3[0:20]
+
+sample3.shape
+
+
+gloria_sample3=sample3[:,:,0]
+gloria_sample3=series_train_gloria_flow[1].inverse_transform(gloria_sample3)
+gloria_sample3.shape
+
+philippe_sud_sample3=sample3[:,:,1]
+philippe_sud_sample3=series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_sample3)
+philippe_sud_sample3.shape
+
+cimiez_sud_sample3=sample3[:,:,2]
+cimiez_sud_sample3=series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_sample3)
+cimiez_sud_sample3.shape
+
+
+#k=0#
+
+gloria_1=centroids[0][:,0]
+gloria_1=gloria_1.reshape((len(gloria_1), 1))
+
+philippe_sud_1=centroids[0][:,1]
+philippe_sud_1=philippe_sud_1.reshape((len(philippe_sud_1), 1))
+
+cimiez_sud_1=centroids[0][:,2]
+cimiez_sud_1=cimiez_sud_1.reshape((len(cimiez_sud_1), 1))
+
+
+#k=1#
+
+gloria_2=centroids[1][:,0]
+gloria_2=gloria_2.reshape((len(gloria_2), 1))
+
+philippe_sud_2=centroids[1][:,1]
+philippe_sud_2=philippe_sud_2.reshape((len(philippe_sud_2), 1))
+
+cimiez_sud_2=centroids[1][:,2]
+cimiez_sud_2=cimiez_sud_2.reshape((len(cimiez_sud_2), 1))
+
+#k=2#
+
+gloria_3=centroids[2][:,0]
+gloria_3=gloria_3.reshape((len(gloria_3), 1))
+
+philippe_sud_3=centroids[2][:,1]
+philippe_sud_3=philippe_sud_3.reshape((len(philippe_sud_3), 1))
+
+cimiez_sud_3=centroids[2][:,2]
+cimiez_sud_3=cimiez_sud_3.reshape((len(cimiez_sud_3), 1))
+
+
+
+x=np.arange(6,23,0.1)
+len(x)
+
+
+plt.figure(figsize=(35,35))
+plt.subplot(3,3,1)
+for i in range(0,20):
+    plt.plot(x,gloria_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_gloria_flow[1].inverse_transform(gloria_2),'#33cc33', label = 'Gloria',linewidth=3)
+plt.xlabel('hours of the day')
+plt.ylabel('occupancy rate %',labelpad=0)
+plt.ylim((0,35))
+plt.title('k=0')
+plt.legend(loc='upper right')
+plt.subplot(3,3,2)
+for i in range(0,20):
+    plt.plot(x,philippe_sud_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_2),'#33cc33', label = 'Philippe Sud',linewidth=3)
+plt.xlabel('hours of the day')
+plt.ylabel('occupancy rate %',labelpad=0)
+plt.ylim((0,35))
+plt.title('k=0')
+plt.legend(loc='upper right')
+plt.subplot(3,3,3)
+for i in range(0,20):
+    plt.plot(x,cimiez_sud_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_2),'#33cc33', label = 'Cimiez Sud',linewidth=3)
+plt.xlabel('hours of the day')
+plt.ylabel('occupancy rate %',labelpad=0)
+plt.ylim((0,35))
+plt.title('k=0')
+plt.legend(loc='upper right')
+plt.subplot(3,3,4)
+for i in range(0,20):
+    plt.plot(x,gloria_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_gloria_flow[1].inverse_transform(gloria_3),'#0033cc', label = 'Gloria',linewidth=3)
+plt.xlabel('hours of the day')
+plt.ylabel('occupancy rate %',labelpad=0)
+plt.ylim((0,35))
+plt.title('k=1')
+plt.legend(loc='upper right')
+plt.subplot(3,3,5)
+for i in range(0,20):
+    plt.plot(x,philippe_sud_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_3),'#0033cc', label = 'Philippe Sud',linewidth=3)
+plt.xlabel('hours of the day')
+plt.ylabel('occupancy rate %',labelpad=0)
+plt.ylim((0,35))
+plt.title('k=1')
+plt.legend(loc='upper right')
+plt.subplot(3,3,6)
+for i in range(0,20):
+    plt.plot(x,cimiez_sud_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_3),'#0033cc', label = 'Cimiez Sud',linewidth=3)
+plt.xlabel('hours of the day')
+plt.ylabel('occupancy rate %',labelpad=0)
+plt.ylim((0,35))
+plt.title('k=1')
+plt.legend(loc='upper right')
+plt.subplot(3,3,7)
+for i in range(0,20):
+    plt.plot(x,gloria_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_gloria_flow[1].inverse_transform(gloria_1),'#666699', label = 'Gloria',linewidth=3)
+plt.xlabel('hours of the day')
+plt.ylabel('occupancy rate %',labelpad=0)
+plt.ylim((0,35))
+plt.title('k=2')
+plt.legend(loc='upper right')
+plt.subplot(3,3,8)
+for i in range(0,20):
+    plt.plot(x,philippe_sud_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_philippe_sud_flow[1].inverse_transform(philippe_sud_1),'#666699', label = 'Philippe Sud',linewidth=3)
+plt.xlabel('hours of the day')
+plt.ylabel('occupancy rate %',labelpad=0)
+plt.ylim((0,35))
+plt.title('k=2')
+plt.legend(loc='upper right')
+plt.subplot(3,3,9)
+for i in range(0,20):
+    plt.plot(x,cimiez_sud_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_cimiez_sud_flow[1].inverse_transform(cimiez_sud_1),'#666699', label = 'Cimiez Sud',linewidth=3)
+plt.xlabel('hours of the day')
+plt.ylabel('occupancy rate %',labelpad=0)
+plt.ylim((0,35))
+plt.title('k=2')
+plt.legend(loc='upper right')
+plt.figtext(0.5,0.36, "Working days higher traffic peak in the morning", ha="center", va="top", fontsize=14, color="r")
+plt.figtext(0.5,0.63, "Working days higher traffic peak in the afternoon", ha="center", va="top", fontsize=14, color="r")
+plt.figtext(0.5,0.90, "No Working days, school breaks", ha="center", va="top", fontsize=14, color="r")
+plt.show()
+
+
 
 

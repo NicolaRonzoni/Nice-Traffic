@@ -38,47 +38,22 @@ grinda=pd.read_excel(r"Voie Mathis North direction.xlsx",sheet_name=5)
 series=pd.Series(data=grinda["speed"].values,index=grinda.index)
 
 series.plot()
-#SPEED
-#cimiez nord
-cimiez_nord_speed=data_split_north(cimiez_nord)
-## create daily time series train 
-series_train_cimiez_nord_speed=daily_series(cimiez_nord_speed[0],170)
-series_train_cimiez_nord_speed[0].shape
-print('Min: %f, Max: %f' % (series_train_cimiez_nord_speed[1].data_min_, series_train_cimiez_nord_speed[1].data_max_))
-#philippe nord
-philippe_nord_speed=data_split_north(philippe_nord)
-## create daily time series train 
-series_train_philippe_nord_speed=daily_series(philippe_nord_speed[0],170)
-series_train_philippe_nord_speed[0].shape
-print('Min: %f, Max: %f' % (series_train_philippe_nord_speed[1].data_min_, series_train_philippe_nord_speed[1].data_max_))
-#magnan
-magnan_speed=data_split_north(magnan)
-## create daily time series train 
-series_train_magnan_speed=daily_series(magnan_speed[0],170)
-series_train_magnan_speed[0].shape
-print('Min: %f, Max: %f' % (series_train_magnan_speed[1].data_min_, series_train_magnan_speed[1].data_max_))
-#grinda
-grinda_speed=data_split_north(grinda)
-## create daily time series train 
-series_train_grinda_speed=daily_series(grinda_speed[0],170)
-series_train_grinda_speed[0].shape
-print('Min: %f, Max: %f' % (series_train_grinda_speed[1].data_min_, series_train_grinda_speed[1].data_max_))
 
-#FLOW
+
 #cimiez nord
-cimiez_nord_flow=data_split_flow_north_bis(cimiez_nord)
+cimiez_nord_flow=data_split_flow_north(cimiez_nord)
 ## create daily time series train 
 series_train_cimiez_nord_flow=daily_series(cimiez_nord_flow[0],170)
 series_train_cimiez_nord_flow[0].shape
 print('Min: %f, Max: %f' % (series_train_cimiez_nord_flow[1].data_min_, series_train_cimiez_nord_flow[1].data_max_))
 #philippe nord
-philippe_nord_flow=data_split_flow_north_bis(philippe_nord)
+philippe_nord_flow=data_split_flow_north(philippe_nord)
 ## create daily time series train 
 series_train_philippe_nord_flow=daily_series(philippe_nord_flow[0],170)
 series_train_philippe_nord_flow[0].shape
 print('Min: %f, Max: %f' % (series_train_philippe_nord_flow[1].data_min_, series_train_philippe_nord_flow[1].data_max_))
 #magnan
-magnan_flow=data_split_flow_north_bis(magnan)
+magnan_flow=data_split_flow_north(magnan)
 ## create daily time series train 
 series_train_magnan_flow=daily_series(magnan_flow[0],170)
 series_train_magnan_flow[0].shape
@@ -105,11 +80,11 @@ print('Min: %f, Max: %f' % (series_train_grinda_flow[1].data_min_, series_train_
 
 
 #multivariate time series train
-multivariate=np.dstack((series_train_cimiez_nord_flow[0],series_train_philippe_nord_flow[0],series_train_magnan_flow[0]))
+multivariate=np.dstack((series_train_cimiez_nord_flow[0],series_train_philippe_nord_flow[0],series_train_magnan_flow[0],series_train_grinda_flow[0]))
 multivariate_time_series_train = to_time_series(multivariate)
 print(multivariate_time_series_train.shape)
 
-#FLOW
+
 #cimiez nord 
 series_test_cimiez_nord_flow=daily_series(cimiez_nord_flow[1],170)
 series_test_cimiez_nord_flow[0].shape
@@ -137,7 +112,7 @@ print('Min: %f, Max: %f' % (series_test_grinda_flow[1].data_min_, series_test_gr
 
 
 #multivariate time series test
-multivariate_test=np.dstack((series_test_cimiez_nord_flow[0],series_test_philippe_nord_flow[0],series_test_magnan_flow[0]))
+multivariate_test=np.dstack((series_test_cimiez_nord_flow[0],series_test_philippe_nord_flow[0],series_test_magnan_flow[0],series_test_grinda_flow[0]))
 multivariate_time_series_test = to_time_series(multivariate_test)
 print(multivariate_time_series_test.shape)
 
@@ -312,28 +287,28 @@ len(index_train)
 
 #plot the result 
 new=[]
-for i in range(0,342):
+for i in range(0,312):
     if prediction_train[i] == 0:
         y=0.05
     elif prediction_train[i] !=0: 
         y=prediction_train[i]
     new.append(y)
     
-for i in range(0,342):
+for i in range(0,312):
     if new[i] == 0.05:
         new[i] =4
         
-for i in range(0,342):
+for i in range(0,312):
     if new[i] == 2:
         new[i] =0.05
 
-for i in range(0,342):
+for i in range(0,312):
     if new[i] ==4:
         new[i] =2
 
 #assign at every day the cluster
 events_train = pd.Series(new,index=index_train)
-calplot.calplot(events_train,yearlabel_kws={'color': 'black'}, cmap='Accent', suptitle='TrafficData Voie Mathis North Direction 2019 (train):débit de circulation loops', linewidth=2.3,dropzero=True,vmin=0) 
+calplot.calplot(events_train,yearlabel_kws={'color': 'black'}, cmap='Accent', suptitle='TrafficData Voie Mathis North Direction 2019 (train):speed loops', linewidth=2.3,dropzero=True,vmin=0) 
 
 for i in range(0,357):
     if new[i] == 0.05:
@@ -380,7 +355,7 @@ for i in range(0,28):
 
 
 events_test = pd.Series(new,index=index_test)
-calplot.calplot(events_test,yearlabel_kws={'color': 'black'}, cmap='Accent', suptitle='TrafficData Voie Mathis North Direction 2020 (test):débit de circulation loops', linewidth=2.3,dropzero=True,vmin=0) 
+calplot.calplot(events_test,yearlabel_kws={'color': 'black'}, cmap='Accent', suptitle='TrafficData Voie Mathis North Direction 2020 (test):speed loops', linewidth=2.3,dropzero=True,vmin=0) 
 
 
 for i in range(0,35):
@@ -392,59 +367,13 @@ np.set_printoptions(threshold=400)
 prediction_test      
 
 
-
+#######################################
+#plot of the centroid 
 
 #centroids 
 centroids=km_dba.cluster_centers_
 
 centroids.shape
-
-#dataframe to select days which belogns to the closest cluster 
-len(index_train)
-columns=['days','k']
-index=np.arange(357)
-len(index)
-dataframe_train=pd.DataFrame(columns=columns,index=index)
-dataframe_train['days']=index_train
-dataframe_train['k']=prediction_train
-dataframe_train
-dataframe_train['day'] = dataframe_train['days'].dt.day
-dataframe_train['month'] =dataframe_train['days'].dt.month
-dataframe_train['year'] = dataframe_train['days'].dt.year
-dataframe_train.drop(['days'], axis=1)
-dataframe_train = dataframe_train[['year', 'month', 'day', 'k']]
-dataframe_train
-dataframe_train.to_excel('/Users/nronzoni/Desktop/TrafficData Minnesota/Prediction with ramps/Classification of the days.xlsx')
-#if k=0 
-days_cluster=dataframe_train[dataframe_train['k']==2].index
-len(days_cluster)
-#multivariate time series train speed
-#check if multivariate_speed already exist
-multivariate_speed=np.dstack((series_train_S54_speed[0],series_train_S1706_speed[0],series_train_S56_speed[0],series_train_S57_speed[0],series_train_S1707_speed[0],series_train_S59_speed[0],series_train_S60_speed[0],series_train_S61_speed[0]))
-multivariate_time_series_train_speed = to_time_series(multivariate_speed)
-print(multivariate_time_series_train_speed.shape)
-
-#multivariate time series test speed
-multivariate_test_speed=np.dstack((series_test_S54_speed[0],series_test_S1706_speed[0],series_test_S56_speed[0],series_test_S57_speed[0],series_test_S1707_speed[0],series_test_S59_speed[0],series_test_S60_speed[0],series_test_S61_speed[0]))
-multivariate_time_series_test_speed = to_time_series(multivariate_test_speed)
-print(multivariate_time_series_test_speed.shape)
-
-pd.set_option('display.max_seq_items', 200)
-print(days_cluster)
-multivariate_time_series_train_speed_subset=multivariate_time_series_train_speed[(17,  38,  45,  59,  66,  72,  80,  87,  94, 101, 115, 122, 129,
-            136, 142, 143, 150, 156, 157, 163, 164, 169, 170, 172, 173, 174,
-            179, 187, 188, 192, 193, 194, 195, 200, 201, 202, 207, 208, 209,
-            214, 215, 216, 220, 221, 222, 223, 229, 230, 233, 234, 235, 242,
-            247, 254, 260, 261, 268, 275, 282, 289, 296, 303, 310, 317, 322,
-            331, 338, 345),:,:]
-
-multivariate_time_series_train_speed_subset.shape
-#day nearest to the cluster centroid 
-closest(multivariate_time_series_train,prediction_train,centroids,3,events_train)
-
-############# plot of the centroids 
-########## centroids#########################
-########################################### k=4 ################################
 
 ##### first cluster #######
 cluster1=multivariate_time_series_train[prediction_train==0]
@@ -455,37 +384,21 @@ sample1=cluster1[0:20]
 
 sample1.shape
 
-S54_sample1=sample1[:,:,0]
-S54_sample1=series_train_S54_flow[1].inverse_transform(S54_sample1)
-S54_sample1.shape
+cimiez_nord_sample1=sample1[:,:,0]
+cimiez_nord_sample1=series_train_cimiez_nord_flow[1].inverse_transform(cimiez_nord_sample1)
+cimiez_nord_sample1.shape
 
-S1706_sample1=sample1[:,:,1]
-S1706_sample1=series_train_S1706_flow[1].inverse_transform(S1706_sample1)
-S1706_sample1.shape
+philippe_nord_sample1=sample1[:,:,1]
+philippe_nord_sample1=series_train_philippe_nord_flow[1].inverse_transform(philippe_nord_sample1)
+philippe_nord_sample1.shape
 
-S56_sample1=sample1[:,:,2]
-S56_sample1=series_train_S56_flow[1].inverse_transform(S56_sample1)
-S56_sample1.shape
+magnan_sample1=sample1[:,:,2]
+magnan_sample1=series_train_magnan_flow[1].inverse_transform(magnan_sample1)
+magnan_sample1.shape
 
-S57_sample1=sample1[:,:,3]
-S57_sample1=series_train_S57_flow[1].inverse_transform(S57_sample1)
-S57_sample1.shape
-
-S1707_sample1=sample1[:,:,4]
-S1707_sample1=series_train_S1707_flow[1].inverse_transform(S1707_sample1)
-S1707_sample1.shape
-
-S59_sample1=sample1[:,:,5]
-S59_sample1=series_train_S59_flow[1].inverse_transform(S59_sample1)
-S59_sample1.shape
-
-S60_sample1=sample1[:,:,6]
-S60_sample1=series_train_S60_flow[1].inverse_transform(S60_sample1)
-S60_sample1.shape
-
-S61_sample1=sample1[:,:,7]
-S61_sample1=series_train_S61_flow[1].inverse_transform(S61_sample1)
-S61_sample1.shape
+grinda_sample1=sample1[:,:,3]
+grinda_sample1=series_train_grinda_flow[1].inverse_transform(grinda_sample1)
+grinda_sample1.shape
 
 
 ####second cluster #######
@@ -499,37 +412,21 @@ sample2=cluster2[0:20]
 
 sample2.shape
 
-S54_sample2=sample2[:,:,0]
-S54_sample2=series_train_S54_flow[1].inverse_transform(S54_sample2)
-S54_sample2.shape
+cimiez_nord_sample2=sample2[:,:,0]
+cimiez_nord_sample2=series_train_cimiez_nord_flow[1].inverse_transform(cimiez_nord_sample2)
+cimiez_nord_sample2.shape
 
-S1706_sample2=sample2[:,:,1]
-S1706_sample2=series_train_S1706_flow[1].inverse_transform(S1706_sample2)
-S1706_sample2.shape
+philippe_nord_sample2=sample2[:,:,1]
+philippe_nord_sample2=series_train_philippe_nord_flow[1].inverse_transform(philippe_nord_sample2)
+philippe_nord_sample2.shape
 
-S56_sample2=sample2[:,:,2]
-S56_sample2=series_train_S56_flow[1].inverse_transform(S56_sample2)
-S56_sample2.shape
+magnan_sample2=sample2[:,:,2]
+magnan_sample2=series_train_magnan_flow[1].inverse_transform(magnan_sample2)
+magnan_sample2.shape
 
-S57_sample2=sample2[:,:,3]
-S57_sample2=series_train_S57_flow[1].inverse_transform(S57_sample2)
-S57_sample2.shape
-
-S1707_sample2=sample2[:,:,4]
-S1707_sample2=series_train_S1707_flow[1].inverse_transform(S1707_sample2)
-S1707_sample2.shape
-
-S59_sample2=sample2[:,:,5]
-S59_sample2=series_train_S59_flow[1].inverse_transform(S59_sample2)
-S59_sample2.shape
-
-S60_sample2=sample2[:,:,6]
-S60_sample2=series_train_S60_flow[1].inverse_transform(S60_sample2)
-S60_sample2.shape
-
-S61_sample2=sample2[:,:,7]
-S61_sample2=series_train_S61_flow[1].inverse_transform(S61_sample2)
-S61_sample2.shape
+grinda_sample2=sample2[:,:,3]
+grinda_sample2=series_train_grinda_flow[1].inverse_transform(grinda_sample2)
+grinda_sample2.shape
 
 
 #select randomly time series from third cluster 
@@ -541,485 +438,362 @@ sample3=cluster3[0:20]
 
 sample3.shape
 
+cimiez_nord_sample3=sample3[:,:,0]
+cimiez_nord_sample3=series_train_cimiez_nord_flow[1].inverse_transform(cimiez_nord_sample3)
+cimiez_nord_sample3.shape
 
-S54_sample3=sample3[:,:,0]
-S54_sample3=series_train_S54_flow[1].inverse_transform(S54_sample3)
-S54_sample3.shape
+philippe_nord_sample3=sample3[:,:,1]
+philippe_nord_sample3=series_train_philippe_nord_flow[1].inverse_transform(philippe_nord_sample3)
+philippe_nord_sample3.shape
 
-S1706_sample3=sample3[:,:,1]
-S1706_sample3=series_train_S1706_flow[1].inverse_transform(S1706_sample3)
-S1706_sample3.shape
+magnan_sample3=sample3[:,:,2]
+magnan_sample3=series_train_magnan_flow[1].inverse_transform(magnan_sample3)
+magnan_sample3.shape
 
-S56_sample3=sample3[:,:,2]
-S56_sample3=series_train_S56_flow[1].inverse_transform(S56_sample3)
-S56_sample3.shape
-
-S57_sample3=sample3[:,:,3]
-S57_sample3=series_train_S57_flow[1].inverse_transform(S57_sample3)
-S57_sample3.shape
-
-S1707_sample3=sample3[:,:,4]
-S1707_sample3=series_train_S1707_flow[1].inverse_transform(S1707_sample3)
-S1707_sample3.shape
-
-S59_sample3=sample3[:,:,5]
-S59_sample3=series_train_S59_flow[1].inverse_transform(S59_sample3)
-S59_sample3.shape
-
-S60_sample3=sample3[:,:,6]
-S60_sample3=series_train_S60_flow[1].inverse_transform(S60_sample3)
-S60_sample3.shape
-
-S61_sample3=sample3[:,:,7]
-S61_sample3=series_train_S61_flow[1].inverse_transform(S61_sample3)
-S61_sample3.shape
-
-#select randomly time series from fourth cluster 
-cluster4=multivariate_time_series_train[prediction_train==3]
-
-random.shuffle(cluster4)
-
-sample4=cluster4[0:20]
-
-sample4.shape
-
-S54_sample4=sample4[:,:,0]
-S54_sample4=series_train_S54_flow[1].inverse_transform(S54_sample4)
-S54_sample4.shape
-
-S1706_sample4=sample4[:,:,1]
-S1706_sample4=series_train_S1706_flow[1].inverse_transform(S1706_sample4)
-S1706_sample4.shape
-
-S56_sample4=sample4[:,:,2]
-S56_sample4=series_train_S56_flow[1].inverse_transform(S56_sample4)
-S56_sample4.shape
-
-S57_sample4=sample4[:,:,3]
-S57_sample4=series_train_S57_flow[1].inverse_transform(S57_sample4)
-S57_sample4.shape
-
-S1707_sample4=sample4[:,:,4]
-S1707_sample4=series_train_S57_flow[1].inverse_transform(S1707_sample4)
-S1707_sample4.shape
-
-S59_sample4=sample4[:,:,5]
-S59_sample4=series_train_S59_flow[1].inverse_transform(S59_sample4)
-S59_sample4.shape
-
-S60_sample4=sample4[:,:,6]
-S60_sample4=series_train_S60_flow[1].inverse_transform(S60_sample4)
-S60_sample4.shape
-
-S61_sample4=sample4[:,:,7]
-S61_sample4=series_train_S61_flow[1].inverse_transform(S61_sample4)
-S61_sample4.shape
+grinda_sample3=sample3[:,:,3]
+grinda_sample3=series_train_grinda_flow[1].inverse_transform(grinda_sample3)
+grinda_sample3.shape
 
 
-# plot the centroids k=4 
-centroids=km_dba.cluster_centers_
-centroids.shape
 
 #k=0#
-S54_1=centroids[0][:,0]
-S54_1=S54_1.reshape((len(S54_1), 1))
+cimiez_nord_1=centroids[0][:,0]
+cimiez_nord_1=cimiez_nord_1.reshape((len(cimiez_nord_1), 1))
 
-S1706_1=centroids[0][:,1]
-S1706_1=S1706_1.reshape((len(S1706_1), 1))
+philippe_nord_1=centroids[0][:,1]
+philippe_nord_1=philippe_nord_1.reshape((len(philippe_nord_1), 1))
 
-S56_1=centroids[0][:,2]
-S56_1=S56_1.reshape((len(S56_1), 1))
+magnan_1=centroids[0][:,2]
+magnan_1=magnan_1.reshape((len(magnan_1), 1))
 
-S57_1=centroids[0][:,3]
-S57_1=S57_1.reshape((len(S57_1), 1))
+grinda_1=centroids[0][:,3]
+grinda_1=grinda_1.reshape((len(grinda_1), 1))
 
-S1707_1=centroids[0][:,4]
-S1707_1=S1707_1.reshape((len(S1707_1), 1))
-
-S59_1=centroids[0][:,5]
-S59_1=S59_1.reshape((len(S59_1), 1))
-
-S60_1=centroids[0][:,6]
-S60_1=S60_1.reshape((len(S60_1), 1))
-
-S61_1=centroids[0][:,7]
-S61_1=S61_1.reshape((len(S61_1), 1))
 
 #k=1#
-S54_2=centroids[1][:,0]
-S54_2=S54_2.reshape((len(S54_2), 1))
+cimiez_nord_2=centroids[1][:,0]
+cimiez_nord_2=cimiez_nord_2.reshape((len(cimiez_nord_2), 1))
 
-S1706_2=centroids[1][:,1]
-S1706_2=S1706_2.reshape((len(S1706_2), 1))
+philippe_nord_2=centroids[1][:,1]
+philippe_nord_2=philippe_nord_2.reshape((len(philippe_nord_2), 1))
 
-S56_2=centroids[1][:,2]
-S56_2=S56_2.reshape((len(S56_2), 1))
+magnan_2=centroids[1][:,2]
+magnan_2=magnan_2.reshape((len(magnan_2), 1))
 
-S57_2=centroids[1][:,3]
-S57_2=S57_2.reshape((len(S57_2), 1))
+grinda_2=centroids[1][:,3]
+grinda_2=grinda_2.reshape((len(grinda_2), 1))
 
-S1707_2=centroids[1][:,4]
-S1707_2=S1707_2.reshape((len(S1707_2), 1))
-
-S59_2=centroids[1][:,5]
-S59_2=S59_2.reshape((len(S59_2), 1))
-
-S60_2=centroids[1][:,6]
-S60_2=S60_2.reshape((len(S60_2), 1))
-
-S61_2=centroids[1][:,7]
-S61_2=S61_2.reshape((len(S61_2), 1))
 
 #k=2#
-S54_3=centroids[2][:,0]
-S54_3=S54_3.reshape((len(S54_3), 1))
+cimiez_nord_3=centroids[2][:,0]
+cimiez_nord_3=cimiez_nord_3.reshape((len(cimiez_nord_3), 1))
 
-S1706_3=centroids[2][:,1]
-S1706_3=S1706_3.reshape((len(S1706_3), 1))
+philippe_nord_3=centroids[2][:,1]
+philippe_nord_3=philippe_nord_3.reshape((len(philippe_nord_3), 1))
 
-S56_3=centroids[2][:,2]
-S56_3=S56_3.reshape((len(S56_3), 1))
+magnan_3=centroids[2][:,2]
+magnan_3=magnan_3.reshape((len(magnan_3), 1))
 
-S57_3=centroids[2][:,3]
-S57_3=S57_3.reshape((len(S57_3), 1))
+grinda_3=centroids[2][:,3]
+grinda_3=grinda_3.reshape((len(grinda_3), 1))
 
-S1707_3=centroids[2][:,4]
-S1707_3=S1707_3.reshape((len(S1707_3), 1))
 
-S59_3=centroids[2][:,5]
-S59_3=S59_3.reshape((len(S59_3), 1))
-
-S60_3=centroids[2][:,6]
-S60_3=S60_3.reshape((len(S60_3), 1))
-
-S61_3=centroids[2][:,7]
-S61_3=S61_3.reshape((len(S61_3), 1))
-
-#k=3#
-S54_4=centroids[3][:,0]
-S54_4=S54_4.reshape((len(S54_4), 1))
-
-S1706_4=centroids[3][:,1]
-S1706_4=S1706_4.reshape((len(S1706_4), 1))
-
-S56_4=centroids[3][:,2]
-S56_4=S56_4.reshape((len(S56_4), 1))
-
-S57_4=centroids[3][:,3]
-S57_4=S57_4.reshape((len(S57_4), 1))
-
-S1707_4=centroids[3][:,4]
-S1707_4=S1707_4.reshape((len(S1707_4), 1))
-
-S59_4=centroids[3][:,5]
-S59_4=S59_4.reshape((len(S59_4), 1))
-
-S60_4=centroids[3][:,6]
-S60_4=S60_4.reshape((len(S60_4), 1))
-
-S61_4=centroids[3][:,7]
-S61_4=S61_4.reshape((len(S61_4), 1))
-
-import matplotlib.pyplot as plt
-fig = plt.gcf()
-
-x=np.arange(5,23,0.1)
+x=np.arange(6,23,0.1)
 len(x)
 
 
-plt.figure(figsize=(35,40))
-plt.subplot(4,8,1)
+plt.figure(figsize=(35,35))
+plt.subplot(3,4,1)
 for i in range(0,20):
-    plt.plot(x,S54_sample3[i],'k-', alpha=.1)
-plt.plot(x,series_train_S54_flow[1].inverse_transform(S54_3),'#33cc33', label = 'S54',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=0')
-plt.legend(loc='upper right')
-plt.subplot(4,8,2)
+    plt.plot(x,cimiez_nord_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_cimiez_nord_flow[1].inverse_transform(cimiez_nord_1),'#33cc33', label = 'Cimiez Nord',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=0',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,4,2)
 for i in range(0,20):
-    plt.plot(x,S1706_sample3[i],'k-', alpha=.1)
-plt.plot(x,series_train_S1706_flow[1].inverse_transform(S1706_3),'#33cc33', label = 'S1706',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=0')
-plt.legend(loc='upper right')
-plt.subplot(4,8,3)
+    plt.plot(x,philippe_nord_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_philippe_nord_flow[1].inverse_transform(philippe_nord_1),'#33cc33', label = 'Philippe Nord',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=0',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,4,3)
 for i in range(0,20):
-    plt.plot(x,S56_sample3[i],'k-', alpha=.1)
-plt.plot(x,series_train_S56_flow[1].inverse_transform(S56_3),'#33cc33', label = 'S56',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=0')
-plt.legend(loc='upper right')
-plt.subplot(4,8,4)
+    plt.plot(x,magnan_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_magnan_flow[1].inverse_transform(magnan_1),'#33cc33', label = 'Magnan',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=0',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,4,4)
 for i in range(0,20):
-    plt.plot(x,S57_sample3[i],'k-', alpha=.1)
-plt.plot(x,series_train_S57_flow[1].inverse_transform(S57_3),'#33cc33', label = 'S57',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=0')
-plt.legend(loc='upper right')
-plt.subplot(4,8,5)
+    plt.plot(x,grinda_sample1[i],'k-', alpha=.1)
+plt.plot(x,series_train_grinda_flow[1].inverse_transform(grinda_1),'#33cc33', label = 'Grinda',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=0',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,4,5)
 for i in range(0,20):
-    plt.plot(x,S1707_sample3[i],'k-', alpha=.1)
-plt.plot(x,series_train_S1707_flow[1].inverse_transform(S1707_3),'#33cc33', label = 'S1707',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=0')
-plt.legend(loc='upper right')
-plt.subplot(4,8,6)
+    plt.plot(x,cimiez_nord_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_cimiez_nord_flow[1].inverse_transform(cimiez_nord_2),'#0033cc', label = 'Cimiez Nord',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=1',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,4,6)
 for i in range(0,20):
-    plt.plot(x,S59_sample3[i],'k-', alpha=.1)
-plt.plot(x,series_train_S59_flow[1].inverse_transform(S59_3),'#33cc33', label = 'S59',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=0')
-plt.legend(loc='upper right')
-plt.subplot(4,8,7)
+    plt.plot(x,philippe_nord_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_philippe_nord_flow[1].inverse_transform(philippe_nord_2),'#0033cc', label = 'Philippe Nord',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=1',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,4,7)
 for i in range(0,20):
-    plt.plot(x,S60_sample3[i],'k-', alpha=.1)
-plt.plot(x,series_train_S60_flow[1].inverse_transform(S60_3),'#33cc33', label = 'S60',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=0')
-plt.legend(loc='upper right')
-plt.subplot(4,8,8)
+    plt.plot(x,magnan_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_magnan_flow[1].inverse_transform(magnan_2),'#0033cc', label = 'Magnan',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=1',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,4,8)
 for i in range(0,20):
-    plt.plot(x,S61_sample3[i],'k-', alpha=.1)
-plt.plot(x,series_train_S61_flow[1].inverse_transform(S61_3),'#33cc33', label = 'S61',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=0')
-plt.legend(loc='upper right')
-plt.subplot(4,8,9)
+    plt.plot(x,grinda_sample2[i],'k-', alpha=.1)
+plt.plot(x,series_train_grinda_flow[1].inverse_transform(grinda_2),'#0033cc', label = 'Grinda',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=1',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,4,9)
 for i in range(0,20):
-    plt.plot(x,S54_sample2[i],'k-', alpha=.1)
-plt.plot(x,series_train_S54_flow[1].inverse_transform(S54_2),'#ff9900', label = 'S54',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=1')
-plt.legend(loc='upper right')
-plt.subplot(4,8,10)
+    plt.plot(x,cimiez_nord_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_cimiez_nord_flow[1].inverse_transform(cimiez_nord_3),'#666699', label = 'Cimiez Nord',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=2',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,4,10)
 for i in range(0,20):
-    plt.plot(x,S1706_sample2[i],'k-', alpha=.1)
-plt.plot(x,series_train_S1706_flow[1].inverse_transform(S1706_2),'#ff9900', label = 'S1706',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=1')
-plt.legend(loc='upper right')
-plt.subplot(4,8,11)
+    plt.plot(x,philippe_nord_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_philippe_nord_flow[1].inverse_transform(philippe_nord_3),'#666699', label = 'Philippe Nord',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=2',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,4,11)
 for i in range(0,20):
-    plt.plot(x,S56_sample2[i],'k-', alpha=.1)
-plt.plot(x,series_train_S56_flow[1].inverse_transform(S56_2),'#ff9900', label = 'S56',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=1')
-plt.legend(loc='upper right')
-plt.subplot(4,8,12)
+    plt.plot(x,magnan_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_magnan_flow[1].inverse_transform(magnan_3),'#666699', label = 'Magnan',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=2',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.subplot(3,4,12)
 for i in range(0,20):
-    plt.plot(x,S57_sample2[i],'k-', alpha=.1)
-plt.plot(x,series_train_S57_flow[1].inverse_transform(S57_2),'#ff9900', label = 'S57',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=1')
-plt.legend(loc='upper right')
-plt.subplot(4,8,13)
-for i in range(0,20):
-    plt.plot(x,S1707_sample2[i],'k-', alpha=.1)
-plt.plot(x,series_train_S1707_flow[1].inverse_transform(S1707_2),'#ff9900', label = 'S1707',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=1')
-plt.legend(loc='upper right')
-plt.subplot(4,8,14)
-for i in range(0,20):
-    plt.plot(x,S59_sample2[i],'k-', alpha=.1)
-plt.plot(x,series_train_S59_flow[1].inverse_transform(S59_2),'#ff9900', label = 'S59',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=1')
-plt.legend(loc='upper right')
-plt.subplot(4,8,15)
-for i in range(0,20):
-    plt.plot(x,S60_sample2[i],'k-', alpha=.1)
-plt.plot(x,series_train_S60_flow[1].inverse_transform(S60_2),'#ff9900', label = 'S60',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=1')
-plt.legend(loc='upper right')
-plt.subplot(4,8,16)
-for i in range(0,20):
-    plt.plot(x,S61_sample2[i],'k-', alpha=.1)
-plt.plot(x,series_train_S61_flow[1].inverse_transform(S61_2),'#ff9900', label = 'S61',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=1')
-plt.legend(loc='upper right')
-plt.subplot(4,8,17)
-for i in range(0,20):
-    plt.plot(x,S54_sample1[i],'k-', alpha=.1)
-plt.plot(x,series_train_S54_flow[1].inverse_transform(S54_1),'#ff0066', label = 'S54',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=2')
-plt.legend(loc='upper right')
-plt.subplot(4,8,18)
-for i in range(0,20):
-    plt.plot(x,S1706_sample1[i],'k-', alpha=.1)
-plt.plot(x,series_train_S1706_flow[1].inverse_transform(S1706_1),'#ff0066', label = 'S1706',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=2')
-plt.legend(loc='upper right')
-plt.subplot(4,8,19)
-for i in range(0,20):
-    plt.plot(x,S56_sample1[i],'k-', alpha=.1)
-plt.plot(x,series_train_S56_flow[1].inverse_transform(S56_1),'#ff0066', label = 'S56',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=2')
-plt.legend(loc='upper right')
-plt.subplot(4,8,20)
-for i in range(0,20):
-    plt.plot(x,S57_sample1[i],'k-', alpha=.1)
-plt.plot(x,series_train_S57_flow[1].inverse_transform(S57_1),'#ff0066', label = 'S57',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=2')
-plt.legend(loc='upper right')
-plt.subplot(4,8,21)
-for i in range(0,20):
-    plt.plot(x,S1707_sample1[i],'k-', alpha=.1)
-plt.plot(x,series_train_S1707_flow[1].inverse_transform(S1707_1),'#ff0066', label = 'S1707',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=2')
-plt.legend(loc='upper right')
-plt.subplot(4,8,22)
-for i in range(0,20):
-    plt.plot(x,S59_sample1[i],'k-', alpha=.1)
-plt.plot(x,series_train_S59_flow[1].inverse_transform(S59_1),'#ff0066', label = 'S59',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=2')
-plt.legend(loc='upper right')
-plt.subplot(4,8,23)
-for i in range(0,20):
-    plt.plot(x,S60_sample1[i],'k-', alpha=.1)
-plt.plot(x,series_train_S60_flow[1].inverse_transform(S60_1),'#ff0066', label = 'S60',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=2')
-plt.legend(loc='upper right')
-plt.subplot(4,8,24)
-for i in range(0,20):
-    plt.plot(x,S61_sample1[i],'k-', alpha=.1)
-plt.plot(x,series_train_S61_flow[1].inverse_transform(S61_1),'#ff0066', label = 'S61',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=2')
-plt.legend(loc='upper right')
-plt.subplot(4,8,25)
-for i in range(0,20):
-    plt.plot(x,S54_sample4[i],'k-', alpha=.1)
-plt.plot(x,series_train_S54_flow[1].inverse_transform(S54_4),'#476b6b', label = 'S54',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=3')
-plt.legend(loc='upper right')
-plt.subplot(4,8,26)
-for i in range(0,20):
-    plt.plot(x,S1706_sample4[i],'k-', alpha=.1)
-plt.plot(x,series_train_S1706_flow[1].inverse_transform(S1706_4),'#476b6b', label = 'S1706',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=3')
-plt.legend(loc='upper right')
-plt.subplot(4,8,27)
-for i in range(0,20):
-    plt.plot(x,S56_sample4[i],'k-', alpha=.1)
-plt.plot(x,series_train_S56_flow[1].inverse_transform(S56_4),'#476b6b', label = 'S56',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=3')
-plt.legend(loc='upper right')
-plt.subplot(4,8,28)
-for i in range(0,20):
-    plt.plot(x,S57_sample4[i],'k-', alpha=.1)
-plt.plot(x,series_train_S57_flow[1].inverse_transform(S57_4),'#476b6b', label = 'S57',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=3')
-plt.legend(loc='upper right')
-plt.subplot(4,8,29)
-for i in range(0,20):
-    plt.plot(x,S1707_sample4[i],'k-', alpha=.1)
-plt.plot(x,series_train_S1707_flow[1].inverse_transform(S1707_4),'#476b6b', label = 'S1707',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=3')
-plt.legend(loc='upper right')
-plt.subplot(4,8,30)
-for i in range(0,20):
-    plt.plot(x,S59_sample4[i],'k-', alpha=.1)
-plt.plot(x,series_train_S59_flow[1].inverse_transform(S59_4),'#476b6b', label = 'S59',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=3')
-plt.legend(loc='upper right')
-plt.subplot(4,8,31)
-for i in range(0,20):
-    plt.plot(x,S60_sample4[i],'k-', alpha=.1)
-plt.plot(x,series_train_S60_flow[1].inverse_transform(S60_4),'#476b6b', label = 'S60',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=3')
-plt.legend(loc='upper right')
-plt.subplot(4,8,32)
-for i in range(0,20):
-    plt.plot(x,S61_sample4[i],'k-', alpha=.1)
-plt.plot(x,series_train_S61_flow[1].inverse_transform(S61_4),'#476b6b', label = 'S61',linewidth=3)
-plt.xlabel('hours of the day')
-plt.ylabel('veh/h',labelpad=0)
-plt.ylim((0,9800))
-plt.title('k=3')
-plt.legend(loc='upper right')
-plt.figtext(0.5,0.30, "January,February and December", ha="center", va="top", fontsize=14, color="r")
-plt.figtext(0.5,0.50, "Fridays, Wednesdays and Thursdays in June, July and August", ha="center", va="top", fontsize=14, color="r")
-plt.figtext(0.5,0.70, "No working days", ha="center", va="top", fontsize=14, color="r")
-plt.figtext(0.5,0.90, "First part of the week from May to November", ha="center", va="top", fontsize=14, color="r")
+    plt.plot(x,grinda_sample3[i],'k-', alpha=.1)
+plt.plot(x,series_train_grinda_flow[1].inverse_transform(grinda_3),'#666699', label = 'Grinda',linewidth=3)
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('dèbit de circulation veh',labelpad=0,fontsize=18)
+plt.ylim((0,450))
+plt.xticks(size=16)
+plt.yticks(size=16)
+plt.title('k=2',fontsize=18)
+plt.legend(loc='upper right',fontsize=18)
+plt.figtext(0.5,0.36, "Working days", ha="center", va="top", fontsize=24, color="r")
+plt.figtext(0.5,0.63, "Sundays", ha="center", va="top", fontsize=24, color="r")
+plt.figtext(0.5,0.90, "Saturdays, August ", ha="center", va="top", fontsize=24, color="r")
+plt.show()
+
+
+##################################### prediction
+##################### speed
+
+multivariate_time_series_train.shape
+
+first_day_cimiez_nord=walk_forward_validation_bis(multivariate_time_series_train,multivariate_time_series_test[26:27,:,:],5,110,0)
+first_day_philippe_nord=walk_forward_validation_bis(multivariate_time_series_train,multivariate_time_series_test[26:27,:,:],5,110,1)
+first_day_magnan=walk_forward_validation_bis(multivariate_time_series_train,multivariate_time_series_test[26:27,:,:],5,110,2)
+first_day_grinda=walk_forward_validation_bis(multivariate_time_series_train,multivariate_time_series_test[26:27,:,:],5,110,3)
+
+
+Y_pred_cimiez_nord=series_test_cimiez_nord_flow[1].inverse_transform(first_day_cimiez_nord[0].reshape(-1,1))
+Y_test_cimiez_nord=series_test_cimiez_nord_flow[1].inverse_transform(first_day_cimiez_nord[1].reshape(-1,1))
+error_cimiez_nord=math.sqrt(mean_squared_error(Y_test_cimiez_nord.reshape(-1,1),Y_pred_cimiez_nord.reshape(-1,1)))
+Y_pred_philippe_nord=series_test_philippe_nord_flow[1].inverse_transform(first_day_philippe_nord[0].reshape(-1,1))
+Y_test_philippe_nord=series_test_philippe_nord_flow[1].inverse_transform(first_day_philippe_nord[1].reshape(-1,1))
+error_philippe_nord=math.sqrt(mean_squared_error(Y_test_philippe_nord.reshape(-1,1),Y_pred_philippe_nord.reshape(-1,1)))
+Y_pred_magnan=series_test_magnan_flow[1].inverse_transform(first_day_magnan[0].reshape(-1,1))
+Y_test_magnan=series_test_magnan_flow[1].inverse_transform(first_day_magnan[1].reshape(-1,1))
+error_magnan=math.sqrt(mean_squared_error(Y_test_magnan.reshape(-1,1),Y_pred_magnan.reshape(-1,1)))
+Y_pred_grinda=series_test_grinda_flow[1].inverse_transform(first_day_grinda[0].reshape(-1,1))
+Y_test_grinda=series_test_grinda_flow[1].inverse_transform(first_day_grinda[1].reshape(-1,1))
+error_grinda=math.sqrt(mean_squared_error(Y_test_grinda.reshape(-1,1),Y_pred_grinda.reshape(-1,1)))
+
+
+error=mean([error_cimiez_nord,error_philippe_nord,error_magnan,error_grinda])
+
+
+columns = ['Cimiez Nord speed (km/h)','Cimiez Nord speed (km/h) ground truth','Philippe Nord speed (km/h)','Philippe Nord speed (km/h) ground truth','Magnan speed (km/h)','Magnan speed (km/h) ground truth','Grinda speed (km/h)','Grinda speed (km/h) ground truth']
+index=pd.date_range("17:00", periods=20, freq="6min")
+df_7= pd.DataFrame(index=index.time, columns=columns)
+df_7
+df_7['Cimiez Nord speed (km/h)']=Y_pred_cimiez_nord.reshape(-1,1)
+df_7['Cimiez Nord speed (km/h) ground truth']=Y_test_cimiez_nord.reshape(-1,1)
+df_7['Philippe Nord speed (km/h)']=Y_pred_philippe_nord.reshape(-1,1)
+df_7['Philippe Nord speed (km/h) ground truth']=Y_test_philippe_nord.reshape(-1,1)
+df_7['Magnan speed (km/h)']=Y_pred_magnan.reshape(-1,1)
+df_7['Magnan speed (km/h) ground truth']=Y_test_magnan.reshape(-1,1)
+df_7['Grinda speed (km/h)']=Y_pred_grinda.reshape(-1,1)
+df_7['Grinda speed (km/h) ground truth']=Y_test_grinda.reshape(-1,1)
+df_7
+
+
+
+#20/1 from 7:00 to 8:54 (Monday)
+df_1
+#22/1 from 17:00 to 18:56 (Wednesday)
+df_2
+#24/01 from 17:00 to 18:56 (Friday)
+df_3
+#27/2 from 7:00 to 8:54 (Thursday)
+df_4
+#27/3 from 17:00 to 18:56 (Friday)
+df_5
+#22/07 from 17:00 to 18:56 (Wednesday)
+df_6
+#25/07 from 17:00 to 18:56 (Saturday)
+df_7
+
+
+writer = pd.ExcelWriter('/Users/nronzoni/Desktop/Voie Mathis/prediction/WALKFORWARD_SupportVectorRegression_prediction_speed_30min_NC.xlsx', engine='xlsxwriter')
+
+# Write each dataframe to a different worksheet.
+df_1.to_excel(writer, sheet_name='20-1-2020 morning')
+df_2.to_excel(writer, sheet_name='22-1-2020 afternoon')
+df_3.to_excel(writer, sheet_name='24-1-2020 afternoon')
+df_4.to_excel(writer, sheet_name='27-2-2020 morning')
+df_5.to_excel(writer, sheet_name='27-3-2020 afternoon')
+df_6.to_excel(writer, sheet_name='22-7-2020 afternoon')
+df_7.to_excel(writer, sheet_name='25-7-2020 afternoon')
+
+# Close the Pandas Excel writer and output the Excel file.
+writer.save()
+
+###### Plot 
+
+
+df_no = pd.read_excel('/Users/nronzoni/Desktop/Voie Mathis/prediction/WALKFORWARD_SupportVectorRegression_prediction_speed_30min_NC.xlsx', sheet_name='22-7-2020 afternoon')
+
+df_si = pd.read_excel('/Users/nronzoni/Desktop/Voie Mathis/prediction/WALKFORWARD_SupportVectorRegression_prediction_speed_30MIN.xlsx', sheet_name='22-07-2020 afternoon') 
+
+#fix upper bound and lower bound for the flow 
+df_si.min(axis=0)
+df_no.min(axis=0)
+df_si.max(axis=0)
+df_no.max(axis=0)
+
+minimum=5
+maximum=85
+#ground truth svr classifaction prediction 
+cimiez_nord_si=df_si['Cimiez Nord speed (km/h)'].values
+cimiez_nord_no=df_no['Cimiez Nord speed (km/h)'].values
+cimiez_nord_GT=df_si['Cimiez Nord speed (km/h) ground truth'].values
+philippe_nord_si=df_si['Philippe Nord speed (km/h)'].values
+philippe_nord_no=df_no['Philippe Nord speed (km/h)'].values
+philippe_nord_GT=df_si['Philippe Nord speed (km/h) ground truth'].values
+magnan_si=df_si['Magnan speed (km/h)'].values
+magnan_no=df_no['Magnan speed (km/h)'].values
+magnan_GT=df_si['Magnan speed (km/h) ground truth'].values
+grinda_si=df_si['Grinda speed (km/h)'].values
+grinda_no=df_no['Grinda speed (km/h)'].values
+grinda_GT=df_si['Grinda speed (km/h) ground truth'].values
+
+x=index_third_period=pd.date_range('2014-02-10 17:00:00',periods=20, freq='6min')
+len(x)
+x=x.strftime("%H:%M")
+              
+plt.figure(figsize=(35,25))
+plt.subplot(2,2,1)
+plt.plot(x,cimiez_nord_si,'r-',label='Walk Forward prediction with clustering')
+plt.plot(x,cimiez_nord_no,'b-',label='Walk Forward prediction')
+plt.plot(x,cimiez_nord_GT,'g-',label='ground truth')
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('km/h',labelpad=0,fontsize=18)
+plt.ylim((minimum,maximum))
+plt.title('Cimiez Nord',fontsize=18)
+plt.xticks(rotation=30,size=16)
+plt.yticks(size=16)
+plt.legend(loc='lower left',fontsize=18)
+plt.subplot(2,2,2)
+plt.plot(x,philippe_nord_si,'r-',label='Walk Forward prediction with clustering')
+plt.plot(x,philippe_nord_no,'b-',label='Walk Forward prediction')
+plt.plot(x,philippe_nord_GT,'g-',label='ground truth')
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('km/h',labelpad=0,fontsize=18)
+plt.ylim((minimum,maximum))
+plt.title('Philippe Nord',fontsize=18)
+plt.xticks(rotation=30,size=16)
+plt.yticks(size=16)
+plt.legend(loc='lower left',fontsize=18)
+plt.subplot(2,2,3)
+plt.plot(x,magnan_si,'r-',label='Walk Forward prediction with clustering')
+plt.plot(x,magnan_no,'b-',label='Walk Forward prediction')
+plt.plot(x,magnan_GT,'g-',label='ground truth')
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('km/h',labelpad=0,fontsize=18)
+plt.ylim((minimum,maximum))
+plt.title('Magnan',fontsize=18)
+plt.xticks(rotation=30,size=16)
+plt.yticks(size=16)
+plt.legend(loc='lower left',fontsize=18)
+plt.subplot(2,2,4)
+plt.plot(x,grinda_si,'r-',label='Walk Forward prediction with clustering')
+plt.plot(x,grinda_no,'b-',label='Walk Forward prediction')
+plt.plot(x,grinda_GT,'g-',label='ground truth')
+plt.xlabel('hours of the day',fontsize=18)
+plt.ylabel('km/h',labelpad=0,fontsize=18)
+plt.ylim((minimum,maximum))
+plt.title('Grinda',fontsize=18)
+plt.xticks(rotation=30,size=16)
+plt.yticks(size=16)
+plt.legend(loc='upper left',fontsize=18)
+plt.suptitle("22/7/2020 speed predictions: loops North direction Voie Mathis", fontsize=24, y=0.93)
 plt.show()
 
 

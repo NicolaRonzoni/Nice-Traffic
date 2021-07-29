@@ -1198,7 +1198,7 @@ def walk_forward_validation(train,test,window_size,starting_time,loop):
     Y_test=test[:,starting_time:,:]
     GROUND_TRUTH_test=[]
     PRED_test=[]
-    for t in range(0,10): # number of prediction from starting point
+    for t in range(0,20): # number of prediction from starting point
         # take an observation forward: len(X_train)=len(X_test)+1 
         train_set=train[:,0:starting_time+1+t,:]
         #select only most window_size+1 recent observations for train 
@@ -1206,7 +1206,7 @@ def walk_forward_validation(train,test,window_size,starting_time,loop):
         #select only most window_size recent observations for test
         X_test=X_test[:,-window_size:,:]
         #clustering
-        km_dba = TimeSeriesKMeans(n_clusters=4, metric="softdtw",metric_params={"gamma":gamma_soft_dtw(dataset=XY_train, n_samples=200,random_state=0) }, max_iter=5,max_iter_barycenter=5, random_state=0).fit(XY_train)
+        km_dba = TimeSeriesKMeans(n_clusters=3, metric="softdtw",metric_params={"gamma":gamma_soft_dtw(dataset=XY_train, n_samples=200,random_state=0) }, max_iter=5,max_iter_barycenter=5, random_state=0).fit(XY_train)
         #assign the day you want to predict to a cluster
         prediction_train=km_dba.fit_predict(XY_train,y=None)
         prediction_test_cluster= km_dba.predict(X_test)
@@ -1241,9 +1241,48 @@ def walk_forward_validation(train,test,window_size,starting_time,loop):
     GROUND_TRUTH_test=np.concatenate(GROUND_TRUTH_test,axis=0)
     return PRED_test, GROUND_TRUTH_test
  
-
-
-      
+def walk_forward_validation_bis(train,test,window_size,starting_time,loop):
+    #define a starting split X and Y for test set 
+    X_test=test[:,0:starting_time,:]
+    Y_test=test[:,starting_time:,:]
+    GROUND_TRUTH_test=[]
+    PRED_test=[]
+    for t in range(0,20): # number of prediction from starting point
+        # take an observation forward: len(X_train)=len(X_test)+1 
+        train_set=train[:,0:starting_time+1+t,:]
+        #select only most window_size+1 recent observations for train 
+        XY_train=train_set[:,-window_size-1:,:]
+        #select only most window_size recent observations for test
+        X_test=X_test[:,-window_size:,:]
+        #divide X and Y in the train set 
+        X_train=XY_train[:,-window_size-1:-1,:]
+        Y_train=XY_train[:,-1:,:]
+        #select the detector we want to predict
+        x_train=X_train.reshape(X_train.shape[0],-1)
+        x_test=X_test.reshape(1,-1)
+        #select the target Train 
+        y_train=Y_train[:,0,loop]
+        #select the target Test
+        y_test=Y_test[:,t,loop]
+        #rescale the target Test 
+        GROUND_TRUTH_test.append(y_test)
+        #Grid search to tune the parameters
+        reg =SVR(kernel="rbf", gamma="auto")
+        clf = GridSearchCV(estimator=reg, param_grid=p_grid, scoring='neg_mean_squared_error',refit=True,cv=3)
+        #fit the model with the best found parameters
+        clf.fit(x_train,y_train)
+        # prediction for the test 
+        y_hat_test=clf.predict(x_test)
+        #rescale the prediction of the Test 
+        PRED_test.append(y_hat_test)
+        #Add the curent observation to the X set 
+        obs_test=Y_test[:,t:t+1,:]
+        X_test=np.hstack((X_test,obs_test))
+    PRED_test=np.concatenate(PRED_test,axis=0)
+    GROUND_TRUTH_test=np.concatenate(GROUND_TRUTH_test,axis=0)
+    return PRED_test, GROUND_TRUTH_test
+ 
+     
 def loubes(train,test,window_size,starting_time):
     #define a starting split X and Y for test set 
     X_test=test[:,0:starting_time,:]
